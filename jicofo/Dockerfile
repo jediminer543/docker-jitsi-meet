@@ -12,6 +12,6 @@ RUN apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get install -y jicofo && \
     apt-cleanup
 
-COPY rootfs/ /
+COPY --chown=noroot:noroot rootfs/ /
 
 VOLUME /config

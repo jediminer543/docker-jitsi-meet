@@ -14,6 +14,6 @@ RUN apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get install -y jigasi jq jitsi-autoscaler-sidecar && \
     apt-cleanup
 
-COPY rootfs/ /
+COPY --chown=noroot:noroot rootfs/ /
 
 VOLUME ["/config", "/tmp/transcripts"]

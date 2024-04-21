@@ -3,7 +3,11 @@ FROM docker.io/library/debian:bookworm-slim
 ARG JITSI_RELEASE=stable
 ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2
 
-COPY rootfs /
+
+RUN groupadd --gid 1000 noroot; \
+  useradd --uid 1000 --gid 1000 -m noroot
+
+COPY --chown=noroot:noroot rootfs /
 
 RUN \
     dpkgArch="$(dpkg --print-architecture)" && \
@@ -29,12 +33,19 @@ RUN \
     apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get dist-upgrade -y && \
     apt-cleanup && \
-    chmod +x /usr/bin/tpl
+    chown -R noroot:noroot /usr/bin/tpl && \
+    chown -R noroot:noroot /etc/cont-init.d && \
+    chown -R noroot:noroot /etc/services.d && \
+    chown -R noroot:noroot /etc/timezone && \
+    chmod +x /usr/bin/tpl && \
+    chmod +x /etc/cont-init.d/*
 
 RUN [ "$JITSI_RELEASE" = "unstable" ] && \
     apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get install -y jq procps curl vim iputils-ping net-tools && \
     apt-cleanup || \
     true
+
+USER noroot
 
 ENTRYPOINT [ "/init" ]

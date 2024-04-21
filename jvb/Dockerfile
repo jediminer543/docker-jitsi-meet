@@ -12,6 +12,6 @@ RUN apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get install -y jitsi-videobridge2 jitsi-autoscaler-sidecar jq curl iproute2 dnsutils libpcap0.8 && \
     apt-cleanup
 
-COPY rootfs/ /
+COPY --chown=noroot:noroot rootfs/ /
 
 VOLUME /config

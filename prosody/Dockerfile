@@ -68,7 +68,7 @@ RUN wget -qO /etc/apt/trusted.gpg.d/prosody.gpg https://prosody.im/files/prosody
     cp -a prosody-plugins-$VERSION_JITSI_CONTRIB_PROSODY_PLUGINS/*  /prosody-plugins-contrib && \
     rm -rf prosody-plugins-$VERSION_JITSI_CONTRIB_PROSODY_PLUGINS v$VERSION_JITSI_CONTRIB_PROSODY_PLUGINS.tar.gz
 
-COPY rootfs/ /
+COPY --chown=noroot:noroot rootfs/ /
 
 COPY --from=builder /usr/local/lib/lua/5.4 /usr/local/lib/lua/5.4
 COPY --from=builder /usr/local/share/lua/5.4 /usr/local/share/lua/5.4
